@@ -3,7 +3,8 @@
 define dnsmasq::dhcp (
   Stdlib::IP::Address::V4::Nosubnet $dhcp_start,
   Stdlib::IP::Address::V4::Nosubnet $dhcp_end,
-  Stdlib::IP::Address::V4::Nosubnet $netmask,
+  # TODO: Check if we should make this an integer
+  Variant[Integer,String[1]] $netmask,
   String[1] $lease_time,
   Optional[String[1]] $tag = undef,
   Optional[String[1]] $set = undef,
