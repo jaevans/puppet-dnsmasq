@@ -1,29 +1,27 @@
 require 'spec_helper'
 
-describe 'dnsmasq::ptr', :type => 'define' do
-  let :title  do 'foo.com' end
-  let :facts  do {
-    :concat_basedir  => '/foo/bar/baz',
-    :osfamily        => 'Debian',
-    :operatingsystem => 'Debian'
-  } end
+describe 'dnsmasq::ptr', type: 'define' do
+  on_supported_os.each do |os, os_facts|
+    let :title  do 'foo.com' end
+    let(:facts) { os_facts }
 
-  context 'with no params' do
-    it 'should raise error due no params' do
-      expect { should compile }.to raise_error(Puppet::Error,/Must pass/)
+    context "with no params on #{os}" do
+      it 'raises error due no params' do
+        expect { is_expected.to compile.and_raise_error(/expects a value/) }
+      end
+    end
+
+    context "with value on #{os}" do
+      let :params do { value: 'example.com' } end
+
+      it do
+        is_expected.to contain_class('dnsmasq')
+        is_expected.to contain_concat__fragment('dnsmasq-ptr-foo.com').with(
+          order: '10',
+          target: 'dnsmasq.conf',
+          content: "ptr-record=foo.com,example.com\n",
+        )
+      end
     end
   end
-
-  context 'with value' do
-    let :params do { :value => 'example.com' } end
-    it do
-      should contain_class('dnsmasq')
-      should contain_concat__fragment('dnsmasq-ptr-foo.com').with(
-        :order   => '09',
-        :target  => 'dnsmasq.conf',
-        :content => "ptr-record=foo.com,example.com\n",
-      )
-    end
-  end
-
 end

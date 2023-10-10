@@ -1,5 +1,5 @@
 # Create an dnsmasq txt record (--txt-record).
-define dnsmasq::txt(
+define dnsmasq::txt (
   $value,
 ) {
   include dnsmasq
@@ -9,5 +9,4 @@ define dnsmasq::txt(
     target  => 'dnsmasq.conf',
     content => template('dnsmasq/txt.erb'),
   }
-
 }

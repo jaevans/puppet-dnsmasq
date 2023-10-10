@@ -1,0 +1,4 @@
+---
+dnsmasq::dnsmasq_logdir: /var/log/dnsmasq
+dnsmasq::dnsmasq_confdir: /usr/local/etc/dnsmasq.d
+dnsmasq::dnsmasq_package: dns/dnsmasq

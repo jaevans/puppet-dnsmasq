@@ -26,5 +26,4 @@ define dnsmasq::dhcpboot (
     target  => 'dnsmasq.conf',
     content => template('dnsmasq/dhcpboot.erb'),
   }
-
 }

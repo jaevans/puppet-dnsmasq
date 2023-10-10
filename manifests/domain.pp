@@ -1,9 +1,8 @@
 # Create a dnsmasq domain (--domain).
 define dnsmasq::domain (
-  $subnet = undef,
-  $local  = false,
+  Optional[Stdlib::IP::Address] $subnet = undef,
+  Boolean $local  = false,
 ) {
-  validate_bool($local)
   include dnsmasq
 
   $local_real = $local ? {
@@ -20,5 +19,4 @@ define dnsmasq::domain (
     target  => 'dnsmasq.conf',
     content => template('dnsmasq/domain.erb'),
   }
-
 }

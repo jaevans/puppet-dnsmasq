@@ -3,9 +3,12 @@ fixtures:
   repositories:
     concat:
       repo: 'https://github.com/puppetlabs/puppetlabs-concat'
-      ref: 1.0.0
+      ref: v9.0.0
     stdlib:
       repo: 'https://github.com/puppetlabs/puppetlabs-stdlib'
-      ref: 3.0.0
+      ref: v9.4.0
+    host_core:
+      repo: 'https://github.com/puppetlabs/puppetlabs-host_core'
+      ref: v1.2.0
   symlinks:
     dnsmasq: "#{source_dir}"

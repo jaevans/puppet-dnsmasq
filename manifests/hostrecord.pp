@@ -1,9 +1,9 @@
 # Create a dnsmasq A,AAAA and PTR record (--host-record).
 define dnsmasq::hostrecord (
-  $ip,
-  $ipv6 = undef,
+  Stdlib::IP::Address::V4::Nosubnet $ip,
+  Optional[Stdlib::IP::Address::V6::Nosubnet] $ipv6 = undef,
 ) {
-  if !is_ip_address($ip) { fail("Expect IP address for ip, got ${ip}") }
+  # if !is_ip_address($ip) { fail("Expect IP address for ip, got ${ip}") }
 
   include dnsmasq
 
@@ -17,5 +17,4 @@ define dnsmasq::hostrecord (
     target  => 'dnsmasq.conf',
     content => template('dnsmasq/hostrecord.erb'),
   }
-
 }

@@ -1,0 +1,103 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'yaml'
+require 'json'
+require 'rest-client'
+
+def forgeapi
+  'https://forgeapi.puppet.com/v3'
+end
+
+def module_info(module_name)
+  return @cached_info[module_name] unless @cached_info.nil? || @cached_info[module_name].nil?
+
+  @cached_info = {} if @cached_info.nil?
+
+  response = RestClient.get "#{forgeapi}/modules/#{module_name}"
+  info = JSON.parse response.body
+
+  unless info['superseded_by'].nil?
+    warn "  => Superseded by #{info['superseded_by']['slug']}"
+    info = module_info(info['superseded_by']['slug'])
+  end
+
+  @cached_info[module_name] = info
+end
+
+requires = {}
+available = {}
+
+metadata = JSON.load_file('metadata.json')
+
+input = YAML.load_file('.fixtures.yml')
+output = Marshal.load(Marshal.dump(input))
+
+deps = {}
+
+input.dig('fixtures', 'repositories')&.each do |key, _value|
+  fixtures_dir = File.join('.', 'spec', 'fixtures', 'modules', key)
+  unless File.directory?(fixtures_dir)
+    raise "Local directory for #{key} not found.  Run `bundle exec rake spec_prep`?"
+  end
+
+  fixture_data = JSON.load_file(File.join(fixtures_dir, 'metadata.json'))
+  slug = fixture_data['name'].sub(%r{/}, '-')
+  deps[slug] ||= []
+  available[slug] = true
+
+  fixture_data['dependencies']&.each do |dep|
+    depname = dep['name'].sub(%r{/}, '-')
+    requires[depname] = [] if requires[depname].nil?
+    requires[depname].push(slug)
+  end
+end
+
+input.dig('fixtures', 'forge_modules')&.each do |_key, value|
+  deps[value.sub(%r{/}, '-')] ||= []
+end
+
+metadata['dependencies']&.each do |dep|
+  deps[dep['name'].sub(%r{/}, '-')] = []
+end
+
+until deps.empty?
+  deps.each do |dep, req|
+    next if available[dep]
+
+    warn "Checking #{dep}"
+    warn "  => Required by #{req.join(', ')}" unless req.empty?
+
+    info = module_info(dep)
+
+    warn "  => Replaced with #{info['slug']}" unless dep == info['slug']
+
+    output['fixtures'] = {} if output['fixtures'].nil?
+    output['fixtures']['forge_modules'] = {} if output['fixtures']['forge_modules'].nil?
+    output['fixtures']['forge_modules'][info['name']] = info['slug']
+
+    available[dep] = true
+    available[info['slug']] = true
+
+    info['current_release']['metadata']['dependencies'].each do |d|
+      depname = d['name'].sub(%r{/}, '-')
+      requires[depname] = [] if requires[depname].nil?
+      requires[depname].push(info['slug'])
+    end
+  end
+
+  deps = requires.filter { |dep| !available[dep] }
+end
+
+unless output.dig('fixtures', 'forge_modules').nil?
+  output['fixtures']['forge_modules'].keep_if { |_k, v| available.key?(v) }
+end
+
+if input == output
+  warn 'No changes required!'
+  exit 0
+end
+
+File.open('.fixtures.yml', 'w') do |fh|
+  fh.puts output.to_yaml
+end

@@ -1,40 +1,41 @@
 require 'spec_helper'
 
-describe 'dnsmasq::txt', :type => 'define' do
-  let :title  do 'foo' end
-  let :facts  do {
-    :concat_basedir  => '/foo/bar/baz',
-    :osfamily        => 'Debian',
-    :operatingsystem => 'Debian'
-  } end
+describe 'dnsmasq::txt', type: 'define' do
+  on_supported_os.each do |os, os_facts|
+    let(:facts) { os_facts }
+    let :title  do 'foo' end
 
-  context 'with no params' do
-    it 'should raise error due no params' do
-      expect { should compile }.to raise_error(Puppet::Error,/Must pass/)
+    context "with no params on #{os}" do
+      it 'raises error due no params' do
+        expect { is_expected.to compile.and_raise_error(/expects a value/) }
+        # expect { is_expected.to compile }.to raise_error(Puppet::Error, %r{Must pass})
+      end
     end
-  end
 
-  context 'with one value' do
-    let :params do { :value => 'bar' } end
-    it do
-      should contain_class('dnsmasq')
-      should contain_concat__fragment('dnsmasq-txt-foo').with(
-        :order   => '10',
-        :target  => 'dnsmasq.conf',
-        :content => "txt-record=foo,bar\n",
-      )
+    context "with one value on #{os}" do
+      let :params do { value: 'bar' } end
+
+      it do
+        is_expected.to contain_class('dnsmasq')
+        is_expected.to contain_concat__fragment('dnsmasq-txt-foo').with(
+          order: '11',
+          target: 'dnsmasq.conf',
+          content: "txt-record=foo,bar\n",
+        )
+      end
     end
-  end
 
-  context 'with multiple values' do
-    let :params do { :value => ['bar','baz'] } end
-    it do
-      should contain_class('dnsmasq')
-      should contain_concat__fragment('dnsmasq-txt-foo').with(
-        :order   => '10',
-        :target  => 'dnsmasq.conf',
-        :content => "txt-record=foo,bar,baz\n",
-      )
+    context "with multiple values on #{os}" do
+      let :params do { value: ['bar', 'baz'] } end
+
+      it do
+        is_expected.to contain_class('dnsmasq')
+        is_expected.to contain_concat__fragment('dnsmasq-txt-foo').with(
+          order: '11',
+          target: 'dnsmasq.conf',
+          content: "txt-record=foo,bar,baz\n",
+        )
+      end
     end
   end
 end

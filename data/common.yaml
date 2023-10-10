@@ -1,0 +1,7 @@
+---
+dnsmasq::dnsmasq_confdir: /etc/dnsmasq.d
+dnsmasq::dnsmasq_conffile: /etc/dnsmasq.conf
+dnsmasq::dnsmasq_hasstatus: false
+dnsmasq::dnsmasq_logdir: /var/log
+dnsmasq::dnsmasq_service: dnsmasq
+dnsmasq::dnsmasq_package: dnsmasq

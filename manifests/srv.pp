@@ -1,12 +1,9 @@
 # Create an dnsmasq srv record (--srv-host).
 define dnsmasq::srv (
-  $hostname,
-  $port,
-  $priority = undef,
+  Stdlib::Host $hostname,
+  Stdlib::Port $port,
+  Optional[Variant[String, Integer]] $priority = undef,
 ) {
-  validate_re($port,'^[0-9]+$')
-  if undef != $priority { validate_re($port,'^[0-9]+$') }
-
   $priority_real = $priority ? {
     undef   => '',
     default => ",${priority}",
@@ -19,5 +16,4 @@ define dnsmasq::srv (
     target  => 'dnsmasq.conf',
     content => template('dnsmasq/srv.erb'),
   }
-
 }

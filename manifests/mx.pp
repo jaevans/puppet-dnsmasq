@@ -5,7 +5,7 @@ define dnsmasq::mx (
   $hostname = undef,
   $preference = undef,
 ) {
-  if undef != $preference { validate_re($preference,'^[0-9]+$') }
+  # if undef != $preference { validate_re($preference,'^[0-9]+$') }
 
   include dnsmasq
 
@@ -25,5 +25,4 @@ define dnsmasq::mx (
     target  => 'dnsmasq.conf',
     content => template('dnsmasq/mx.erb'),
   }
-
 }

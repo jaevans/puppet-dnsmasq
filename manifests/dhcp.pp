@@ -29,5 +29,4 @@ define dnsmasq::dhcp (
     target  => 'dnsmasq.conf',
     content => template('dnsmasq/dhcp.erb'),
   }
-
 }

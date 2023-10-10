@@ -9,5 +9,4 @@ define dnsmasq::ptr (
     target  => 'dnsmasq.conf',
     content => template('dnsmasq/ptr.erb'),
   }
-
 }
