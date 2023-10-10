@@ -1,6 +1,6 @@
 # Create an dnsmasq txt record (--txt-record).
 define dnsmasq::txt (
-  $value,
+  Array[String[1]] $value,
 ) {
   include dnsmasq
 

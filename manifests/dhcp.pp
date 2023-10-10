@@ -1,13 +1,13 @@
 # Create an dnsmasq stub zone for caching upstream name resolvers
 # (--dhcp-range).
 define dnsmasq::dhcp (
-  $dhcp_start,
-  $dhcp_end,
-  $netmask,
-  $lease_time,
-  $tag = undef,
-  $set = undef,
-  $mode = undef,
+  Stdlib::IP::Address::V4::Nosubnet $dhcp_start,
+  Stdlib::IP::Address::V4::Nosubnet $dhcp_end,
+  Stdlib::IP::Address::V4::Nosubnet $netmask,
+  String[1] $lease_time,
+  Optional[String[1]] $tag = undef,
+  Optional[String[1]] $set = undef,
+  Optional[String[1]] $mode = undef,
 ) {
   $set_real = $set ? {
     undef   => '',

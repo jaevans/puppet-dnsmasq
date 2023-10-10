@@ -1,7 +1,7 @@
 # Create a dnsmasq dhcp match
 define dnsmasq::dhcpmatch (
-  $content,
-  $paramtag = undef,
+  String[1] $content,
+  Optional[String[1]] $paramtag = undef,
 ) {
   include dnsmasq::params
 

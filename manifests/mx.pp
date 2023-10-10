@@ -1,12 +1,10 @@
 # Create an dnsmasq mx record (--mx-host).
 define dnsmasq::mx (
   # allow for duplicate "mx-host=<name>,..." entries
-  $mx_name = $name,
-  $hostname = undef,
-  $preference = undef,
+  String[1] $mx_name = $name,
+  Optional[String[1]] $hostname = undef,
+  Optional[String[1]] $preference = undef,
 ) {
-  # if undef != $preference { validate_re($preference,'^[0-9]+$') }
-
   include dnsmasq
 
   $hostname_real = $hostname ? {
