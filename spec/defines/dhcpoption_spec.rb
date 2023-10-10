@@ -3,20 +3,16 @@ require 'spec_helper'
 describe 'dnsmasq::dhcpoption', type: 'define' do
   on_supported_os.each do |os, os_facts|
     let(:facts) { os_facts }
-    let :title  do 'option:ntp-server' end
+    let(:title) { 'option:ntp-server' }
 
     context "with no params on #{os}" do
       it 'raises error due no params' do
-        expect { is_expected.to compile.and_raise_error(/expects a value/) }
+        expect { is_expected.to compile.and_raise_error(%r{expects a value}) }
       end
     end
 
     context "with minimal parms on #{os}" do
-      let :params do 
-        { 
-          content: '192.168.0.4' 
-        }
-      end
+      let(:params) { { content: '192.168.0.4' } }
 
       it do
         is_expected.to contain_class('dnsmasq')

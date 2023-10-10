@@ -40,7 +40,7 @@ describe 'dnsmasq', type: 'class' do
             {
               name: 'dnsmasq',
               provider: 'macports',
-            }
+            },
           )
         }
       when 'Debian', 'RedHat'
@@ -52,7 +52,7 @@ describe 'dnsmasq', type: 'class' do
             {
               name: 'dnsmasq',
               provider: nil,
-             }
+            },
           )
         }
       when 'DragonFly', 'FreeBSD'
@@ -64,7 +64,7 @@ describe 'dnsmasq', type: 'class' do
             {
               name: 'dns/dnsmasq',
               provider: nil,
-            }
+            },
           )
         }
       end
@@ -72,13 +72,13 @@ describe 'dnsmasq', type: 'class' do
   end
 
   context 'with reload_resolvconf = false' do
-    let :params do { reload_resolvconf: false } end
+    let(:params) { { reload_resolvconf: false } }
 
     it { is_expected.not_to contain_exec('reload_resolvconf') }
   end
 
   context 'with save_config_file = false' do
-    let :params do { save_config_file: false } end
+    let(:params) { { save_config_file: false } }
 
     it { is_expected.not_to contain_exec('save_config_file') }
   end
@@ -97,7 +97,7 @@ describe 'dnsmasq', type: 'class' do
     param = i.tr('_', '-')
 
     context "with #{i} = true" do
-      let :params do { i => true } end
+      let(:params) { { i => true } }
 
       it {
         is_expected.to contain_concat__fragment('dnsmasq-header').with_content(
@@ -107,7 +107,7 @@ describe 'dnsmasq', type: 'class' do
     end
 
     context "with #{i} = false" do
-      let :params do { i => false } end
+      let(:params) { { i => false } }
 
       it {
         is_expected.to contain_concat__fragment('dnsmasq-header').with_content(

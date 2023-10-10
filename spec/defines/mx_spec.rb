@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'dnsmasq::mx', type: 'define' do
   on_supported_os.each do |os, os_facts|
     let(:facts) { os_facts }
-    let :title  do 'example.com' end
+    let(:title) { 'example.com' }
 
     context "with no params on #{os}" do
       it do

@@ -2,27 +2,20 @@ require 'spec_helper'
 
 describe 'dnsmasq::srv', type: 'define' do
   on_supported_os.each do |os, os_facts|
-    let :title  do '_xmpp-server._tcp.example.com' end
-    let (:facts)  { os_facts }
-    #   {
-    #     concat_basedir: '/foo/bar/baz',
-    #   osfamily: 'Debian',
-    #   operatingsystem: 'Debian'
-    #   }
-    # end
+    let(:title) { '_xmpp-server._tcp.example.com' }
+    let(:facts) { os_facts }
 
     context "with no params on #{os}" do
       it 'raises error due no params' do
-        expect { is_expected.to compile.and_raise_error(/expects a value/) }
-        # expect { is_expected.to compile }.to raise_error(Puppet::Error, %r{Must pass})
+        expect { is_expected.to compile.and_raise_error(%r{expects a value}) }
       end
     end
 
     context "with minimal params on #{os}" do
-      let :params do
+      let(:params) do
         {
           hostname: 'example.com',
-        port: 5333,
+          port: 5333,
         }
       end
 
@@ -39,7 +32,7 @@ describe 'dnsmasq::srv', type: 'define' do
     end
 
     context "with all params on #{os}" do
-      let :params do
+      let(:params) do
         {
           hostname: 'example.com',
           port: 5333,
