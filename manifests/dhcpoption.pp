@@ -9,14 +9,20 @@ define dnsmasq::dhcpoption (
     default => "tag:${tag},",
   }
 
-  $option_real = $option =~ /^option:/ ? {
-    true => $option,
-    default => "option:${option}",
+  # Check if the option is an integer or a string.
+  # Numeric options should not be prefixed with 'option:'
+  case $option {
+    /^[0-9]+$/, /^option:/: {
+      $option_real = $option
+    }
+    default: {
+      $option_real = "option:${option}"
+    }
   }
 
   include dnsmasq
 
-  concat::fragment { "dnsmasq-dhcpoption-${name}":
+  concat::fragment { "dnsmasq-dhcpoption-${option_real}":
     order   => '03',
     target  => 'dnsmasq.conf',
     content => template('dnsmasq/dhcpoption.erb'),
