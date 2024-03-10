@@ -8,12 +8,14 @@ describe 'dnsmasq', type: 'class' do
       is_expected.to contain_concat('dnsmasq.conf').that_requires('Package[dnsmasq]')
     }
     it {
-      is_expected.to contain_concat__fragment('dnsmasq-header').with({
-         name: 'dnsmasq-header',
-        order: '00',
-        target: 'dnsmasq.conf',
-        content: %r{^# MAIN CONFIG START\ndomain-needed\nbogus-priv},
-      })
+      is_expected.to contain_concat__fragment('dnsmasq-header').with(
+        {
+          name: 'dnsmasq-header',
+          order: '00',
+          target: 'dnsmasq.conf',
+          content: %r{^# MAIN CONFIG START\ndomain-needed\nbogus-priv},
+        },
+      )
     }
     it {
       is_expected.to contain_package('dnsmasq').that_comes_before('Service[dnsmasq]')

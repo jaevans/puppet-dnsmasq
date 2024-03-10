@@ -1,10 +1,19 @@
-# Create an dnsmasq cname record (--cname).
+# 
+# @summary The dnsmasq::cname defined type creates an entry in the dnsmasq configuration file for a CNAME record
+# 
+# @example # Create a cname record for host1.example.com that points to host2.example.com
+#   dnsmasq::cname { 'host1.example.com':
+#     hostname => 'host2.example.com',
+#   }
+# 
+# @param name
+#   The name of the CNAME record to create
+# @param hostname
+#   The hostname that the CNAME record should point to
+#
 define dnsmasq::cname (
-  String[1, 255] $hostname,
+  Stdlib::Fqdn $hostname,
 ) {
-  # validate_slength($name,255)     # hostnames cannot be longer
-  # validate_slength($hostname,255) # hostnames cannot be longer
-
   include dnsmasq
 
   concat::fragment { "dnsmasq-cname-${name}":

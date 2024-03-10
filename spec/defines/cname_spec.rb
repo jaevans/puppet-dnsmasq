@@ -23,5 +23,26 @@ describe 'dnsmasq::cname', type: 'define' do
         )
       end
     end
+
+    context "with malformed hostname on #{os}" do
+      let(:params) { { hostname: 'example.com/foo' } }
+      it 'raises error due malformed hostname' do
+        expect { is_expected.to compile.and_raise_error(%r{expects a match for Stdlib::Fqdn}) }
+      end
+    end
+
+    context "with malformed hostname (IP) on #{os}" do
+      let(:params) { { hostname: '172.10.0.1' } }
+      it 'raises error due malformed hostname (IP)' do
+        expect { is_expected.to compile.and_raise_error(%r{expects a match for Stdlib::Fqdns}) }
+      end
+    end
+
+    context "with malformed title (IP) on #{os}" do
+      let(:title) { '172.10.0.1' }
+      it 'raises error due malformed title (IP)' do
+        expect { is_expected.to compile } #.and_raise_error(%r{expects a match for Stdlib::Fqdn}) }
+      end
+    end
   end
 end

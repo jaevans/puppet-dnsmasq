@@ -1,5 +1,7 @@
 # Create an dnsmasq stub zone for caching upstream name resolvers
 # (--dhcp-range).
+#
+
 define dnsmasq::dhcp (
   Stdlib::IP::Address::V4::Nosubnet $dhcp_start,
   Stdlib::IP::Address::V4::Nosubnet $dhcp_end,

@@ -23,5 +23,19 @@ describe 'dnsmasq::hostrecord', type: 'define' do
         )
       end
     end
+
+    context "with different title on #{os}" do
+      let(:title) { 'host.example.com' }
+      let(:params) { { name: 'foo.example.com', ip: '192.168.0.4' } }
+
+      it do
+        is_expected.to contain_class('dnsmasq')
+        is_expected.to contain_concat__fragment('dnsmasq-hostrecord-host.example.com').with(
+          order: '07',
+          target: 'dnsmasq.conf',
+          content: "host-record=foo.example.com,192.168.0.4\n",
+        )
+      end
+    end
   end
 end

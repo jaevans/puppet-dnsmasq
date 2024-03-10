@@ -1,9 +1,20 @@
-# Create a dnsmasq A record (--address).
+# @summary Create a dnsmasq A record (--address).
+#
+# @example Create a dnsmasq A record
+#   dnsmasq::address { 'myhost':
+#     ip => '192.168.1.100'
+#   }
+#
+# @param ip
+#   The IP address to assign to the hostname.
+#
+# @see hostrecord for a more flexible way to create host records.
 define dnsmasq::address (
-  Stdlib::IP::Address $ip,
+  Stdlib::IP::Address::Nosubnet $ip,
 ) {
-  # validate_slength($name,255) # hostnames cannot be longer
-  # if !is_ip_address($ip) { fail("Expect IP address for ip, got ${ip}") }
+  if length($name) > 255 {
+    fail('dnsmasq::address: hostname cannot be longer than 255 characters')
+  }
 
   include dnsmasq
 

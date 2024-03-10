@@ -12,7 +12,7 @@ define dnsmasq::hostrecord (
     default => ",${ipv6}",
   }
 
-  concat::fragment { "dnsmasq-hostrecord-${name}":
+  concat::fragment { "dnsmasq-hostrecord-${title}":
     order   => '07',
     target  => 'dnsmasq.conf',
     content => template('dnsmasq/hostrecord.erb'),
