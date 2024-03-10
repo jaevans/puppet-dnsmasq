@@ -118,7 +118,7 @@ describe 'dnsmasq', type: 'class' do
       }
     end
 
-    context "with resolv_file set to valid path" do
+    context 'with resolv_file set to valid path' do
       let(:params) { { resolv_file: '/etc/resolv.conf' } }
 
       it {
@@ -128,7 +128,7 @@ describe 'dnsmasq', type: 'class' do
       }
     end
 
-    context "with resolv_file set to invalid path" do
+    context 'with resolv_file set to invalid path' do
       let(:params) { { resolv_file: 'invalid/path' } }
 
       it {
@@ -136,7 +136,7 @@ describe 'dnsmasq', type: 'class' do
       }
     end
 
-    context "with resolv_file set to undef" do
+    context 'with resolv_file set to undef' do
       it {
         is_expected.not_to contain_concat__fragment('dnsmasq-header').with_content(
         %r{resolv-file=/etc/resolv.conf},
@@ -144,21 +144,21 @@ describe 'dnsmasq', type: 'class' do
       }
     end
 
-    context "with cache_size unset" do
+    context 'with cache_size unset' do
       it {
         is_expected.to contain_concat__fragment('dnsmasq-header').with_content(
           %r{cache-size=1000},
-         )
+        )
       }
     end
 
-    context "with cache_size set to 999" do
+    context 'with cache_size set to 999' do
       let(:params) { { cache_size: 999 } }
 
       it {
         is_expected.to contain_concat__fragment('dnsmasq-header').with_content(
           %r{cache-size=999},
-         )
+        )
       }
     end
   end

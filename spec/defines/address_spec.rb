@@ -26,13 +26,14 @@ describe 'dnsmasq::address', type: 'define' do
 
     context "with malformed ip on #{os}" do
       let(:params) { { ip: '1234.a.1.1/24' } }
+      let(:params) { { ip: '256.256.256.256' } }
+
       it 'raises error due malformed ip' do
-        expect { is_expected.to compile } #.and_raise_error(%r{expects a match for Stdlib::IP::Address}) }
+        expect { is_expected.to compile } # .and_raise_error(%r{expects a match for Stdlib::IP::Address}) }
       end
 
-      let(:params) { { ip: '256.256.256.256' } }
       it 'raises error due malformed ip' do
-        expect { is_expected.to compile } #.and_raise_error(%r{expects a match for Stdlib::IP::Address}) }
+        expect { is_expected.to compile } # .and_raise_error(%r{expects a match for Stdlib::IP::Address}) }
       end
     end
   end
