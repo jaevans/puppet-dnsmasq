@@ -18,7 +18,7 @@ describe 'dnsmasq::dhcpoption', type: 'define' do
 
         it do
           is_expected.to contain_class('dnsmasq')
-          is_expected.to contain_concat__fragment('dnsmasq-dhcpoption-option:ntp-server').with(
+          is_expected.to contain_concat__fragment('dnsmasq-dhcpoption--option:ntp-server').with(
             order: '03',
             target: 'dnsmasq.conf',
             content: "dhcp-option=option:ntp-server,192.168.0.4\n",
@@ -36,7 +36,7 @@ describe 'dnsmasq::dhcpoption', type: 'define' do
 
         it do
           is_expected.to contain_class('dnsmasq')
-          is_expected.to contain_concat__fragment('dnsmasq-dhcpoption-option:ntp-server').with(
+          is_expected.to contain_concat__fragment('dnsmasq-dhcpoption-foo-option:ntp-server').with(
             order: '03',
             target: 'dnsmasq.conf',
             content: "dhcp-option=tag:foo,option:ntp-server,192.168.0.4\n",
@@ -57,7 +57,7 @@ describe 'dnsmasq::dhcpoption', type: 'define' do
 
         it do
           is_expected.to contain_class('dnsmasq')
-          is_expected.to contain_concat__fragment('dnsmasq-dhcpoption-option:ntp-server').with(
+          is_expected.to contain_concat__fragment('dnsmasq-dhcpoption--ntp-server').with(
             order: '03',
             target: 'dnsmasq.conf',
             content: "dhcp-option=option:ntp-server,192.168.0.4\n",
@@ -75,7 +75,7 @@ describe 'dnsmasq::dhcpoption', type: 'define' do
 
         it do
           is_expected.to contain_class('dnsmasq')
-          is_expected.to contain_concat__fragment('dnsmasq-dhcpoption-option:ntp-server').with(
+          is_expected.to contain_concat__fragment('dnsmasq-dhcpoption-foo-ntp-server').with(
             order: '03',
             target: 'dnsmasq.conf',
             content: "dhcp-option=tag:foo,option:ntp-server,192.168.0.4\n",
@@ -96,7 +96,7 @@ describe 'dnsmasq::dhcpoption', type: 'define' do
 
         it do
           is_expected.to contain_class('dnsmasq')
-          is_expected.to contain_concat__fragment('dnsmasq-dhcpoption-121').with(
+          is_expected.to contain_concat__fragment('dnsmasq-dhcpoption--121').with(
             order: '03',
             target: 'dnsmasq.conf',
             content: "dhcp-option=121,192.168.0.5\n",
@@ -114,7 +114,7 @@ describe 'dnsmasq::dhcpoption', type: 'define' do
 
         it do
           is_expected.to contain_class('dnsmasq')
-          is_expected.to contain_concat__fragment('dnsmasq-dhcpoption-121').with(
+          is_expected.to contain_concat__fragment('dnsmasq-dhcpoption-foo-121').with(
             order: '03',
             target: 'dnsmasq.conf',
             content: "dhcp-option=tag:foo,121,192.168.0.4\n",

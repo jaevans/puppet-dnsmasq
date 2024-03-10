@@ -22,7 +22,7 @@ define dnsmasq::dhcpoption (
 
   include dnsmasq
 
-  concat::fragment { "dnsmasq-dhcpoption-${option_real}":
+  concat::fragment { "dnsmasq-dhcpoption-${tag}-${option}":
     order   => '03',
     target  => 'dnsmasq.conf',
     content => template('dnsmasq/dhcpoption.erb'),
