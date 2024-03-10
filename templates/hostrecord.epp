@@ -1,7 +1,7 @@
-<% if $ip.is_a(Array) { -%>
-  <% $ip.each |$ip_address| { -%>
+<%- if $ip.is_a(Array) { -%>
+  <%- $ip.each |$ip_address| { -%>
 host-record=<%= $name %>,<%= $ip_address %><%= $ipv6_real %>
-  <% } -%>
-<% } else { -%>
+  <%- } -%>
+<%- } else { -%>
 host-record=<%= $name %>,<%= $ip %><%= $ipv6_real %>
-<% } -%>
+<%- } -%>
