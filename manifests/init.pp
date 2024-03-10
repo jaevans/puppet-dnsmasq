@@ -161,7 +161,7 @@ class dnsmasq (
   Variant[Stdlib::Port,String[1]] $port                     = '53',
   Boolean $read_ethers              = false,
   Boolean $reload_resolvconf        = true,
-  Boolean $resolv_file              = false,
+  Optional[Stdlib::Absolutepath] $resolv_file              = undef,
   Boolean  $restart                  = true,
   Optional[String[1]] $run_as_user              = undef,
   Boolean $save_config_file         = true,

@@ -117,5 +117,49 @@ describe 'dnsmasq', type: 'class' do
       )
       }
     end
+
+    context "with resolv_file set to valid path" do
+      let(:params) { { resolv_file: '/etc/resolv.conf' } }
+
+      it {
+        is_expected.to contain_concat__fragment('dnsmasq-header').with_content(
+        %r{resolv-file=/etc/resolv.conf},
+      )
+      }
+    end
+
+    context "with resolv_file set to invalid path" do
+      let(:params) { { resolv_file: 'invalid/path' } }
+
+      it {
+        is_expected.to compile.and_raise_error(%r{parameter 'resolv_file' expects a Stdlib::Absolutepath})
+      }
+    end
+
+    context "with resolv_file set to undef" do
+      it {
+        is_expected.not_to contain_concat__fragment('dnsmasq-header').with_content(
+        %r{resolv-file=/etc/resolv.conf},
+      )
+      }
+    end
+
+    context "with cache_size unset" do
+      it {
+        is_expected.to contain_concat__fragment('dnsmasq-header').with_content(
+          %r{cache-size=1000},
+         )
+      }
+    end
+
+    context "with cache_size set to 999" do
+      let(:params) { { cache_size: 999 } }
+
+      it {
+        is_expected.to contain_concat__fragment('dnsmasq-header').with_content(
+          %r{cache-size=999},
+         )
+      }
+    end
   end
 end
